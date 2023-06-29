@@ -15,6 +15,8 @@ public class UserService {
 	@Autowired
 	UserRepo userRepo;
 	
+	
+	// user by their email
 	public List<User> findUserByEmail(String email)
 	{
 		List<User> user = userRepo.findByEmail(email);
@@ -23,7 +25,7 @@ public class UserService {
 	
 	
 	
-	
+	//register user
     public void saveUser(UserDTO userDto) {
     	
     	try {
@@ -45,6 +47,7 @@ public class UserService {
               
     }
     
+    //update token
     public void updateUserToken(User newUser, int id)
     {
     	try {
@@ -55,6 +58,26 @@ public class UserService {
 		}
     	
     	
+    }
+    
+    //middle ware that checks whether user is logged in or not
+    
+    public boolean isUserLoggedIn(String token, String email)
+    {
+   
+    	List<User> user = userRepo.findByEmail(email);
+    	System.out.println(email + " " + user + " " +  user.size());
+    	if(user.size() > 0)
+    	{
+    		System.out.println("user exists");
+    		if(user.get(0).getToken().compareTo(token) == 0)
+    		{
+    			System.out.println("user token success");
+    			return true;
+    		}
+    	}
+    	
+    	return false;
     }
     
     
