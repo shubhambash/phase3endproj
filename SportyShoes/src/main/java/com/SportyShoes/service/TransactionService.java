@@ -1,6 +1,6 @@
 package com.SportyShoes.service;
 
-import java.time.LocalDateTime;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,13 +22,13 @@ public class TransactionService {
 	{
 		
 		try {
-			
+			 
 			UserTransactions userTrans = new UserTransactions();
 			
 			
 			userTrans.setUser_id(transDto.getUser_id());
 			userTrans.setEmail(transDto.getEmail());
-			userTrans.setCategory_name(transDto.getCategory_name());
+			userTrans.setCategory(transDto.getCategory());
 			userTrans.setProduct_name(transDto.getProduct_name());
 			userTrans.setAppointmentTime(transDto.getAppointmentTime());
 			
@@ -37,10 +37,10 @@ public class TransactionService {
 			
 			return "user transaction saved";
 			
-		} catch (Exception e) {
+		} catch (Exception e) { 
 			
 			
-			
+			 
 		}
 		
 		

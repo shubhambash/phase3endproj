@@ -1,6 +1,6 @@
 package com.SportyShoes.model;
 
-import java.time.LocalDateTime;
+
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,23 +18,23 @@ public class UserTransactions {
 	
 	int user_id;
 	String email;
-	String category_name;
+	String category;
 	String product_name;
-	private LocalDateTime appointmentTime;
+	private String appointmentTime;
 	
-	public UserTransactions(int tran_id, int user_id, String email, String category_name, String product_name,
-			LocalDateTime appointmentTime) {
+	public UserTransactions(int tran_id, int user_id, String email, String category, String product_name,
+			String appointmentTime) {
 		super();
 		this.tran_id = tran_id;
 		this.user_id = user_id;
 		this.email = email;
-		this.category_name = category_name;
+		this.category = category;
 		this.product_name = product_name;
 		this.appointmentTime = appointmentTime;
 	}
 	
 	
-
+ 
 	public UserTransactions() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -66,12 +66,12 @@ public class UserTransactions {
 		this.email = email;
 	}
 
-	public String getCategory_name() {
-		return category_name;
+	public String getCategory() {
+		return category;
 	}
 
-	public void setCategory_name(String category_name) {
-		this.category_name = category_name;
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public String getProduct_name() {
@@ -82,11 +82,11 @@ public class UserTransactions {
 		this.product_name = product_name;
 	}
 
-	public LocalDateTime getAppointmentTime() {
+	public String getAppointmentTime() {
 		return appointmentTime;
 	}
 
-	public void setAppointmentTime(LocalDateTime appointmentTime) {
+	public void setAppointmentTime(String appointmentTime) {
 		this.appointmentTime = appointmentTime;
 	}
 	

@@ -1,28 +1,39 @@
 package com.SportyShoes.controllers;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 //import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.SportyShoes.model.Categories;
 import com.SportyShoes.model.ProductDTO;
 import com.SportyShoes.model.Products;
+import com.SportyShoes.model.User;
+import com.SportyShoes.model.UserTransactions;
 import com.SportyShoes.repository.CategoryRepo;
 import com.SportyShoes.repository.ProductRepo;
+import com.SportyShoes.repository.TransactionRepo;
+import com.SportyShoes.repository.UserRepo;
 import com.SportyShoes.service.CategoryService;
 
 
 @RestController
 public class AdminController {
+	
+	@Autowired
+	TransactionRepo tranRepo;
 	
 	@Autowired
 	CategoryService categoryService;
@@ -33,11 +44,14 @@ public class AdminController {
 	@Autowired
 	ProductRepo adminProdRepo;
 	
+	@Autowired
+	UserRepo userRepo;
+	
 	@GetMapping("/adminGetAllCat")
-	public  String getAllCat() {
-
-		return categoryService.getAllCategories().toString();
+	public  String getAllCat(Model model) {
 		
+	List<Categories> allCat = categoryService.getAllCategories();	
+	return "categories";
 	}
 	
 	@PostMapping("/adminAddCat")
@@ -101,5 +115,58 @@ public class AdminController {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	
+	
+	//Browse the list of users who have signed up and be able to search users
+	
+	@GetMapping("/getUserById")
+	public ResponseEntity<User> getUserById(@RequestParam(name = "id") int id)
+	{
+		try {
+			
+			User user = userRepo.findById(id).get();
+			
+			return new ResponseEntity<>(user, HttpStatus.OK);
+		}catch(Exception e)
+		{
+			return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	
+	// See purchase reports filtered by date and category
+	
+	@GetMapping("/getTransactionsByCat")
+	public ResponseEntity<List<UserTransactions>> getTransactionsByCat(@RequestParam(name="cat") String category)
+	{
+		try {
+			List<UserTransactions> ut = tranRepo.findAllByCategory(category);
+			
+			return new ResponseEntity<>(ut, HttpStatus.OK);
+		}catch(Exception e)
+		{
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@GetMapping("/getTransactionsByDate")
+	public ResponseEntity<List<UserTransactions>> getTransactionsByDate(@RequestParam(name="date") String appointmentTime)
+	{
+		try {
+			List<UserTransactions> ut = tranRepo.findAllByAppointmentTime(appointmentTime);
+			
+			return new ResponseEntity<>(ut, HttpStatus.OK);
+		}catch(Exception e)
+		{
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	
+	
+	
+	
+	
 	
 }
