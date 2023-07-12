@@ -21,6 +21,7 @@ import com.SportyShoes.model.Categories;
 import com.SportyShoes.model.ProductDTO;
 import com.SportyShoes.model.Products;
 import com.SportyShoes.model.User;
+import com.SportyShoes.model.UserDTO;
 import com.SportyShoes.model.UserTransactions;
 import com.SportyShoes.repository.CategoryRepo;
 import com.SportyShoes.repository.ProductRepo;
@@ -73,6 +74,29 @@ public class AdminController {
 			
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	// update admin password
+	
+	@PostMapping("/admin/updatepass")
+	public ResponseEntity<String> updateAdminPass(@RequestBody String newPass)
+	{
+		try {
+			
+			
+			User user = userRepo.findByEmail("admin@admin.com").get(0);
+			
+			user.setPassword(newPass);
+			
+			userRepo.deleteById(user.getUser_id());
+			
+			userRepo.save(user);
+			
+			return new ResponseEntity<>("Password Updated for Admin!",HttpStatus.OK);
+			
+		} catch (Exception e) {
+			return new ResponseEntity<>("Unable to update password",HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
@@ -133,6 +157,9 @@ public class AdminController {
 			return new ResponseEntity<>( HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	
+	
 	
 	
 	// See purchase reports filtered by date and category
